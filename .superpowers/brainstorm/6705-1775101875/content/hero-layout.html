@@ -1,0 +1,145 @@
+<h2>Hero section layout</h2>
+<p class="subtitle">This is the first thing every driver sees. Which structure best communicates trust and gets them to apply?</p>
+
+<div class="cards">
+
+  <!-- Option A: Split — text left, car right -->
+  <div class="card" data-choice="split" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#F0F4FF; padding:0; overflow:hidden;">
+      <!-- Nav -->
+      <div style="background:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #E2E8F0;">
+        <div style="font-size:11px; font-weight:800; color:#1A3A6B; letter-spacing:-0.5px;">UC Auto Connect</div>
+        <div style="display:flex; gap:12px;">
+          <div style="font-size:9px; color:#64748B;">Browse Cars</div>
+          <div style="font-size:9px; color:#64748B;">How It Works</div>
+          <div style="background:#1A3A6B; color:#fff; font-size:9px; font-weight:600; padding:4px 10px; border-radius:4px;">Apply Now</div>
+        </div>
+      </div>
+      <!-- Hero -->
+      <div style="display:flex; align-items:center; padding:24px 20px; min-height:160px;">
+        <div style="flex:1; padding-right:16px;">
+          <div style="font-size:9px; background:#DBEAFE; color:#1A3A6B; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 8px; border-radius:3px; display:inline-block; margin-bottom:10px;">Atlanta's Rideshare Fleet</div>
+          <div style="font-size:22px; font-weight:800; color:#0D1F3C; line-height:1.1; margin-bottom:8px; letter-spacing:-0.5px;">Drive for Uber & Lyft.<br/><span style="color:#1A3A6B;">We handle the car.</span></div>
+          <div style="font-size:10px; color:#64748B; line-height:1.6; margin-bottom:14px;">Weekly rentals, 24hr approval, no long-term commitment. Just pick a car and start earning.</div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div style="background:#1A3A6B; color:#fff; font-size:10px; font-weight:700; padding:8px 16px; border-radius:6px;">Get Started →</div>
+            <div style="font-size:10px; color:#64748B;">500+ drivers served</div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:14px; box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+            <div style="background:#E8F0FE; border-radius:8px; height:70px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
+              <div style="font-size:9px; color:#1A3A6B; font-weight:600;">📷 2023 Toyota Camry</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+              <div>
+                <div style="font-size:11px; font-weight:700; color:#0D1F3C;">2023 Toyota Camry</div>
+                <div style="font-size:9px; color:#64748B;">Sedan · Automatic · 32 MPG</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:14px; font-weight:800; color:#1A3A6B;">$300<span style="font-size:9px; font-weight:500; color:#64748B;">/wk</span></div>
+              </div>
+            </div>
+            <div style="display:flex; gap:4px; margin-bottom:10px;">
+              <div style="background:#D1FAE5; color:#065F46; font-size:8px; font-weight:700; padding:2px 7px; border-radius:4px;">✓ Available</div>
+              <div style="background:#FEF3C7; color:#92400E; font-size:8px; font-weight:600; padding:2px 7px; border-radius:4px;">Uber</div>
+              <div style="background:#FEF3C7; color:#92400E; font-size:8px; font-weight:600; padding:2px 7px; border-radius:4px;">Lyft</div>
+            </div>
+            <div style="background:#1A3A6B; color:#fff; text-align:center; font-size:10px; font-weight:700; padding:8px; border-radius:6px;">Apply for This Car</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Split: Copy + Car Card</h3>
+      <p>Classic two-column. Left side sells the value, right side shows a real vehicle card with price and CTA. Immediate and functional — drivers see the product right away.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Centered with proof -->
+  <div class="card" data-choice="centered" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff; padding:0; overflow:hidden;">
+      <div style="background:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #E2E8F0;">
+        <div style="font-size:11px; font-weight:800; color:#1A3A6B; letter-spacing:-0.5px;">UC Auto Connect</div>
+        <div style="display:flex; gap:12px;">
+          <div style="font-size:9px; color:#64748B;">Browse Cars</div>
+          <div style="font-size:9px; color:#64748B;">How It Works</div>
+          <div style="background:#1A3A6B; color:#fff; font-size:9px; font-weight:600; padding:4px 10px; border-radius:4px;">Apply Now</div>
+        </div>
+      </div>
+      <div style="text-align:center; padding:28px 24px 20px;">
+        <div style="font-size:9px; color:#E87722; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Atlanta · Rideshare Rentals</div>
+        <div style="font-size:26px; font-weight:800; color:#0D1F3C; line-height:1.1; margin-bottom:8px; letter-spacing:-1px;">Rent a car.<br/>Start driving this week.</div>
+        <div style="font-size:10px; color:#64748B; line-height:1.6; margin-bottom:16px; max-width:280px; margin-left:auto; margin-right:auto;">Uber & Lyft-eligible vehicles with weekly rentals, 24-hour approval, and zero credit check requirements.</div>
+        <div style="display:flex; gap:8px; justify-content:center; margin-bottom:20px;">
+          <div style="background:#1A3A6B; color:#fff; font-size:10px; font-weight:700; padding:10px 20px; border-radius:8px;">Browse Available Cars</div>
+          <div style="border:1.5px solid #E2E8F0; color:#64748B; font-size:10px; padding:10px 16px; border-radius:8px;">How It Works</div>
+        </div>
+        <!-- Social proof bar -->
+        <div style="background:#F8FAFF; border:1px solid #E2E8F0; border-radius:10px; padding:12px; display:flex; justify-content:space-around;">
+          <div style="text-align:center;">
+            <div style="font-size:16px; font-weight:800; color:#1A3A6B;">500+</div>
+            <div style="font-size:8px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px;">Drivers</div>
+          </div>
+          <div style="width:1px; background:#E2E8F0;"></div>
+          <div style="text-align:center;">
+            <div style="font-size:16px; font-weight:800; color:#1A3A6B;">24hr</div>
+            <div style="font-size:8px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px;">Approval</div>
+          </div>
+          <div style="width:1px; background:#E2E8F0;"></div>
+          <div style="text-align:center;">
+            <div style="font-size:16px; font-weight:800; color:#1A3A6B;">50+</div>
+            <div style="font-size:8px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px;">Vehicles</div>
+          </div>
+          <div style="width:1px; background:#E2E8F0;"></div>
+          <div style="text-align:center;">
+            <div style="font-size:16px; font-weight:800; color:#E87722;">$300</div>
+            <div style="font-size:8px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px;">From/wk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Centered with Social Proof</h3>
+      <p>Big centered headline, clean body copy, then a proof bar with stats. Focuses on the headline message first, lets the fleet speak for itself below. Better for mobile-first users.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Full-width photo hero -->
+  <div class="card" data-choice="photo" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden;">
+      <!-- Nav overlay -->
+      <div style="background:rgba(13,31,60,0.95); padding:10px 20px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="font-size:11px; font-weight:800; color:#fff; letter-spacing:-0.5px;">UC Auto Connect</div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="font-size:9px; color:rgba(255,255,255,0.6);">Browse Cars</div>
+          <div style="font-size:9px; color:rgba(255,255,255,0.6);">How It Works</div>
+          <div style="background:#E87722; color:#fff; font-size:9px; font-weight:600; padding:4px 10px; border-radius:4px;">Apply Now</div>
+        </div>
+      </div>
+      <!-- Hero with photo bg simulation -->
+      <div style="background: linear-gradient(to right, rgba(13,31,60,0.92) 55%, rgba(13,31,60,0.4) 100%), linear-gradient(135deg, #1a3a6b, #0d1f3c); padding:24px 20px 20px; min-height:140px; display:flex; align-items:center;">
+        <div style="max-width:55%;">
+          <div style="font-size:9px; color:#E87722; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Atlanta-Based · Est. 2022</div>
+          <div style="font-size:22px; font-weight:800; color:#fff; line-height:1.1; margin-bottom:8px; letter-spacing:-0.5px;">The fastest way to start<br/>earning with Uber & Lyft.</div>
+          <div style="font-size:10px; color:rgba(255,255,255,0.65); line-height:1.6; margin-bottom:14px;">Weekly car rentals for rideshare drivers. Apply in minutes, approved in 24 hours.</div>
+          <div style="display:flex; gap:8px;">
+            <div style="background:#E87722; color:#fff; font-size:10px; font-weight:700; padding:8px 16px; border-radius:6px;">Apply Today →</div>
+            <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:10px; padding:8px 14px; border-radius:6px;">See Fleet</div>
+          </div>
+          <!-- Trust line -->
+          <div style="margin-top:14px; display:flex; gap:14px;">
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#22C55E; font-size:10px;">✓</span><span style="color:rgba(255,255,255,0.6); font-size:9px;">No credit check</span></div>
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#22C55E; font-size:10px;">✓</span><span style="color:rgba(255,255,255,0.6); font-size:9px;">Cancel anytime</span></div>
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#22C55E; font-size:10px;">✓</span><span style="color:rgba(255,255,255,0.6); font-size:9px;">Drive this week</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Photo Background Hero</h3>
+      <p>Full-width car/city photo with dark overlay and copy on top. Orange CTA pops. Cinematic, aspirational. Requires good photography — weak photos will hurt it. High impact when done right.</p>
+    </div>
+  </div>
+
+</div>

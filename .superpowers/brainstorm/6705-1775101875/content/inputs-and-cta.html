@@ -1,0 +1,131 @@
+<h2>Two things to refine</h2>
+<p class="subtitle">Updated input style (single direction) + CTA color options to replace orange.</p>
+
+<!-- INPUTS -->
+<div class="section">
+  <div class="label">Input — Updated Style</div>
+  <div style="background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:24px; margin-top:12px;">
+    <div style="display:flex; gap:32px; flex-wrap:wrap; align-items:flex-start;">
+
+      <!-- Old -->
+      <div>
+        <div style="font-size:9px; color:#94A3B8; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Before</div>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:11px; font-weight:600; color:#374151; margin-bottom:5px; font-family:'Arial', sans-serif;">Email address</div>
+          <div style="border:1.5px solid #E2E8F0; border-radius:6px; padding:9px 12px; font-size:12px; color:#9CA3AF; font-family:'Arial', sans-serif; width:200px; background:#fff;">you@example.com</div>
+        </div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#374151; margin-bottom:5px; font-family:'Arial', sans-serif;">Email address</div>
+          <div style="border:1.5px solid #1A3A6B; border-radius:6px; padding:9px 12px; font-size:12px; color:#0D1F3C; font-family:'Arial', sans-serif; width:200px; background:#fff; box-shadow:0 0 0 3px rgba(26,58,107,0.08);">jatin@example.com</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="width:1px; background:#F1F5F9; align-self:stretch;"></div>
+
+      <!-- New -->
+      <div>
+        <div style="font-size:9px; color:#94A3B8; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">After</div>
+
+        <!-- Empty state -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:11px; font-weight:500; color:#64748B; margin-bottom:5px; font-family:'Arial', sans-serif; letter-spacing:0;">Email address</div>
+          <div style="border:1px solid #CBD5E1; border-radius:8px; padding:11px 14px; font-size:13px; color:#CBD5E1; font-family:'Arial', sans-serif; width:200px; background:#FAFBFC; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:13px; opacity:0.5;">✉</span>
+            <span>you@example.com</span>
+          </div>
+        </div>
+
+        <!-- Filled / focused -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:11px; font-weight:500; color:#0D1F3C; margin-bottom:5px; font-family:'Arial', sans-serif;">Email address</div>
+          <div style="border:1.5px solid #1A3A6B; border-radius:8px; padding:11px 14px; font-size:13px; color:#0D1F3C; font-family:'Arial', sans-serif; width:200px; background:#fff; box-shadow:0 0 0 4px rgba(26,58,107,0.07); display:flex; align-items:center; gap:8px;">
+            <span style="font-size:13px; color:#1A3A6B;">✉</span>
+            <span>jatin@example.com</span>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div>
+          <div style="font-size:11px; font-weight:500; color:#DC2626; margin-bottom:5px; font-family:'Arial', sans-serif;">Phone number</div>
+          <div style="border:1.5px solid #DC2626; border-radius:8px; padding:11px 14px; font-size:13px; color:#0D1F3C; font-family:'Arial', sans-serif; width:200px; background:#FFF8F8; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:13px; color:#DC2626;">📞</span>
+            <span>555-abc-defg</span>
+          </div>
+          <div style="font-size:10px; color:#DC2626; margin-top:4px; font-family:'Arial', sans-serif;">Enter a valid phone number</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:16px; padding-top:16px; border-top:1px solid #F1F5F9; font-size:10px; color:#94A3B8; font-family:'Arial', sans-serif; line-height:1.8;">
+      Changes: softer background (#FAFBFC), slightly larger radius (8px), softer border color, icon prefix, label weight reduced, focus ring is subtler. Feels modern without being over-designed.
+    </div>
+  </div>
+</div>
+
+<!-- CTA COLOR -->
+<div class="section">
+  <div class="label">CTA Button — Pick a replacement for orange</div>
+  <div style="background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:24px; margin-top:12px;">
+
+    <div class="options">
+
+      <div class="option" data-choice="teal" onclick="toggleSelect(this)">
+        <div class="letter">A</div>
+        <div class="content" style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <div style="background:#0D9488; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; margin-bottom:6px; display:inline-block;">Apply Now</div>
+            <div style="background:#0F766E; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; display:inline-block; margin-left:6px;">Hover</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 2px;">Teal #0D9488</h3>
+            <p style="margin:0; font-size:12px; color:#64748B;">Pairs naturally with navy. Feels fresh, modern, and trustworthy. Common in fintech. Distinctive from competition.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="option" data-choice="sky" onclick="toggleSelect(this)">
+        <div class="letter">B</div>
+        <div class="content" style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <div style="background:#0369A1; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; margin-bottom:6px; display:inline-block;">Apply Now</div>
+            <div style="background:#075985; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; display:inline-block; margin-left:6px;">Hover</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 2px;">Sky Blue #0369A1</h3>
+            <p style="margin:0; font-size:12px; color:#64748B;">A lighter, brighter blue that contrasts clearly against the dark navy. Clean and corporate. Less exciting but very safe and readable.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="option" data-choice="amber" onclick="toggleSelect(this)">
+        <div class="letter">C</div>
+        <div class="content" style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <div style="background:#D97706; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; margin-bottom:6px; display:inline-block;">Apply Now</div>
+            <div style="background:#B45309; color:#fff; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; display:inline-block; margin-left:6px;">Hover</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 2px;">Refined Amber #D97706</h3>
+            <p style="margin:0; font-size:12px; color:#64748B;">Keeps the warm energy of orange but dials back the "construction cone" feel. Slightly richer and more premium. Closest to what you have.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="option" data-choice="slate-white" onclick="toggleSelect(this)">
+        <div class="letter">D</div>
+        <div class="content" style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <div style="background:#fff; color:#1A3A6B; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; margin-bottom:6px; display:inline-block; border:2px solid #1A3A6B;">Apply Now</div>
+            <div style="background:#F0F4FF; color:#1A3A6B; font-size:12px; font-weight:700; padding:10px 20px; border-radius:6px; font-family:'Arial', sans-serif; display:inline-block; margin-left:6px; border:2px solid #1A3A6B;">Hover</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 2px;">Navy Outline (no accent)</h3>
+            <p style="margin:0; font-size:12px; color:#64748B;">Drop the accent color entirely. Navy fills primary, outlined navy for secondary. Minimal and clean — lets the layout breathe instead of adding color noise.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

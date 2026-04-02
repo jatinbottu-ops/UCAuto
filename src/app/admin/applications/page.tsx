@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ExternalLink } from "lucide-react";
 
 interface Application {
   id: string;
@@ -242,31 +242,56 @@ export default function AdminApplicationsPage() {
               </div>
 
               <div className="bg-white border border-[#E2E8F0] rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-[#0D1F3C] text-sm">Documents</h3>
-                  <span className="text-xs text-[#64748B]">Demo upload references</span>
-                </div>
+                <h3 className="font-semibold text-[#0D1F3C] text-sm mb-3">Documents</h3>
                 <div className="space-y-3">
                   <div className="rounded-lg border border-[#E2E8F0] bg-[#F7F9FC] p-3">
-                    <p className="text-sm font-medium text-[#0D1F3C]">Driver&apos;s License</p>
+                    <p className="text-sm font-medium text-[#0D1F3C] mb-2">Driver&apos;s License</p>
                     {selectedApp.licenseDocKey ? (
                       <>
-                        <p className="text-sm text-[#1A3A6B] mt-1">{formatDocumentName(selectedApp.licenseDocKey)}</p>
-                        <p className="text-xs text-[#64748B] mt-1 break-all">{selectedApp.licenseDocKey}</p>
+                        {/\.(jpg|jpeg|png|webp|gif)$/i.test(selectedApp.licenseDocKey) && (
+                          <img
+                            src={selectedApp.licenseDocKey}
+                            alt="Driver's license"
+                            className="max-h-36 object-contain rounded mb-2 w-full bg-white border border-[#E2E8F0]"
+                          />
+                        )}
+                        <a
+                          href={selectedApp.licenseDocKey}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-[#1A3A6B] hover:underline"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          {formatDocumentName(selectedApp.licenseDocKey)}
+                        </a>
                       </>
                     ) : (
-                      <p className="text-sm text-[#64748B] mt-1">Not uploaded</p>
+                      <p className="text-sm text-[#64748B]">Not uploaded</p>
                     )}
                   </div>
                   <div className="rounded-lg border border-[#E2E8F0] bg-[#F7F9FC] p-3">
-                    <p className="text-sm font-medium text-[#0D1F3C]">Insurance Document</p>
+                    <p className="text-sm font-medium text-[#0D1F3C] mb-2">Insurance Document</p>
                     {selectedApp.insuranceDocKey ? (
                       <>
-                        <p className="text-sm text-[#1A3A6B] mt-1">{formatDocumentName(selectedApp.insuranceDocKey)}</p>
-                        <p className="text-xs text-[#64748B] mt-1 break-all">{selectedApp.insuranceDocKey}</p>
+                        {/\.(jpg|jpeg|png|webp|gif)$/i.test(selectedApp.insuranceDocKey) && (
+                          <img
+                            src={selectedApp.insuranceDocKey}
+                            alt="Insurance document"
+                            className="max-h-36 object-contain rounded mb-2 w-full bg-white border border-[#E2E8F0]"
+                          />
+                        )}
+                        <a
+                          href={selectedApp.insuranceDocKey}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-[#1A3A6B] hover:underline"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          {formatDocumentName(selectedApp.insuranceDocKey)}
+                        </a>
                       </>
                     ) : (
-                      <p className="text-sm text-[#64748B] mt-1">Not uploaded</p>
+                      <p className="text-sm text-[#64748B]">Not uploaded</p>
                     )}
                   </div>
                 </div>

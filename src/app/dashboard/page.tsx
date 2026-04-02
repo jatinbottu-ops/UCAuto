@@ -272,7 +272,7 @@ export default function DashboardPage() {
                     onSelect={(f) => uploadFile(f, "id")}
                   />
                 )}
-                {idStatus === "done" && !idUploaded && (
+                {idStatus === "done" && (
                   <p className="text-xs text-[#15803D] mt-1.5">Uploaded — pending admin review.</p>
                 )}
               </div>
@@ -310,7 +310,7 @@ export default function DashboardPage() {
                     onSelect={(f) => uploadFile(f, "insurance")}
                   />
                 )}
-                {insuranceStatus === "done" && !insuranceUploaded && (
+                {insuranceStatus === "done" && (
                   <p className="text-xs text-[#15803D] mt-1.5">Uploaded — pending admin review.</p>
                 )}
               </div>

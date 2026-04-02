@@ -1,0 +1,169 @@
+<h2>Hero — Bigger card on the right</h2>
+<p class="subtitle">Two options for making the card fill the space more. Click to select your preference.</p>
+
+<div class="cards">
+
+  <!-- Option A: Larger single card, more detail -->
+  <div class="card" data-choice="tall-card" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden; background:#F7F9FC;">
+      <div style="display:flex; align-items:stretch; min-height:280px; font-family:'Arial', sans-serif;">
+
+        <!-- Left copy -->
+        <div style="flex:1; padding:32px 24px 32px 28px; display:flex; flex-direction:column; justify-content:center;">
+          <div style="display:inline-flex; align-items:center; gap:5px; background:#E8F0FE; border-radius:4px; padding:3px 9px; margin-bottom:14px; width:fit-content;">
+            <div style="width:5px; height:5px; background:#1A3A6B; border-radius:50%;"></div>
+            <div style="font-size:9px; font-weight:700; color:#1A3A6B; letter-spacing:1.5px; text-transform:uppercase;">Atlanta · Rideshare Rentals</div>
+          </div>
+          <div style="font-size:26px; font-weight:800; color:#0D1F3C; line-height:1.05; letter-spacing:-1px; margin-bottom:12px;">Drive for Uber & Lyft.<br/><span style="color:#1A3A6B;">We handle the car.</span></div>
+          <div style="font-size:11px; color:#64748B; line-height:1.7; margin-bottom:18px;">Weekly rentals, no long-term lease, no credit check. Apply in minutes.</div>
+          <div style="display:flex; gap:8px; margin-bottom:14px;">
+            <div style="background:#1A3A6B; color:#fff; font-size:11px; font-weight:700; padding:9px 16px; border-radius:6px;">Browse Cars →</div>
+            <div style="border:1.5px solid #CBD5E1; color:#64748B; font-size:11px; font-weight:600; padding:9px 14px; border-radius:6px;">How It Works</div>
+          </div>
+          <div style="display:flex; gap:14px;">
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#16A34A; font-size:10px; font-weight:700;">✓</span><span style="font-size:10px; color:#94A3B8;">No credit check</span></div>
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#16A34A; font-size:10px; font-weight:700;">✓</span><span style="font-size:10px; color:#94A3B8;">Cancel anytime</span></div>
+          </div>
+        </div>
+
+        <!-- Right: tall card with more content -->
+        <div style="flex:1.1; padding:20px 24px 20px 16px; display:flex; align-items:center;">
+          <div style="width:100%; background:#fff; border:1px solid #E2E8F0; border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(26,58,107,0.09);">
+            <!-- Photo area — tall -->
+            <div style="background:linear-gradient(160deg,#dce8fc,#c7d9f7); height:155px; display:flex; align-items:center; justify-content:center; border-bottom:1px solid #E2E8F0; position:relative;">
+              <div style="font-size:10px; color:#94A3B8;">📷 2023 Toyota Camry</div>
+              <div style="position:absolute; top:10px; left:10px; background:#DCFCE7; color:#15803D; font-size:9px; font-weight:700; padding:3px 8px; border-radius:4px;">● Available</div>
+            </div>
+            <!-- Card body -->
+            <div style="padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                <div>
+                  <div style="font-size:13px; font-weight:700; color:#0D1F3C; letter-spacing:-0.2px;">2023 Toyota Camry</div>
+                  <div style="font-size:10px; color:#94A3B8; margin-top:2px;">Sedan · Automatic</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:20px; font-weight:800; color:#1A3A6B; letter-spacing:-0.5px;">$300</div>
+                  <div style="font-size:9px; color:#94A3B8;">/week</div>
+                </div>
+              </div>
+              <!-- Specs row -->
+              <div style="display:flex; gap:6px; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #F1F5F9;">
+                <div style="flex:1; background:#F7F9FC; border-radius:6px; padding:7px 8px; text-align:center;">
+                  <div style="font-size:11px; font-weight:700; color:#0D1F3C;">32</div>
+                  <div style="font-size:8px; color:#94A3B8;">MPG</div>
+                </div>
+                <div style="flex:1; background:#F7F9FC; border-radius:6px; padding:7px 8px; text-align:center;">
+                  <div style="font-size:11px; font-weight:700; color:#0D1F3C;">5</div>
+                  <div style="font-size:8px; color:#94A3B8;">Seats</div>
+                </div>
+                <div style="flex:1; background:#F7F9FC; border-radius:6px; padding:7px 8px; text-align:center;">
+                  <div style="font-size:11px; font-weight:700; color:#0D1F3C;">Auto</div>
+                  <div style="font-size:8px; color:#94A3B8;">Trans</div>
+                </div>
+              </div>
+              <!-- Platforms -->
+              <div style="display:flex; gap:4px; margin-bottom:12px; flex-wrap:wrap;">
+                <div style="background:#E8F0FE; color:#1A3A6B; font-size:9px; font-weight:600; padding:3px 8px; border-radius:4px;">Uber Eligible</div>
+                <div style="background:#E8F0FE; color:#1A3A6B; font-size:9px; font-weight:600; padding:3px 8px; border-radius:4px;">Lyft Eligible</div>
+              </div>
+              <div style="background:#1A3A6B; color:#fff; text-align:center; font-size:11px; font-weight:700; padding:10px; border-radius:6px;">Apply for This Car</div>
+              <div style="text-align:center; font-size:9px; color:#94A3B8; margin-top:7px;">$500 deposit · No credit check</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Single tall card</h3>
+      <p>One vehicle card but taller and more detailed — specs mini-row, platform tags, photo area is larger. Feels substantial without adding clutter.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Stacked cards -->
+  <div class="card" data-choice="stacked-cards" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0; overflow:hidden; background:#F7F9FC;">
+      <div style="display:flex; align-items:stretch; min-height:280px; font-family:'Arial', sans-serif;">
+
+        <!-- Left copy -->
+        <div style="flex:1; padding:32px 20px 32px 28px; display:flex; flex-direction:column; justify-content:center;">
+          <div style="display:inline-flex; align-items:center; gap:5px; background:#E8F0FE; border-radius:4px; padding:3px 9px; margin-bottom:14px; width:fit-content;">
+            <div style="width:5px; height:5px; background:#1A3A6B; border-radius:50%;"></div>
+            <div style="font-size:9px; font-weight:700; color:#1A3A6B; letter-spacing:1.5px; text-transform:uppercase;">Atlanta · Rideshare Rentals</div>
+          </div>
+          <div style="font-size:26px; font-weight:800; color:#0D1F3C; line-height:1.05; letter-spacing:-1px; margin-bottom:12px;">Drive for Uber & Lyft.<br/><span style="color:#1A3A6B;">We handle the car.</span></div>
+          <div style="font-size:11px; color:#64748B; line-height:1.7; margin-bottom:18px;">Weekly rentals, no long-term lease, no credit check. Apply in minutes.</div>
+          <div style="display:flex; gap:8px; margin-bottom:14px;">
+            <div style="background:#1A3A6B; color:#fff; font-size:11px; font-weight:700; padding:9px 16px; border-radius:6px;">Browse Cars →</div>
+            <div style="border:1.5px solid #CBD5E1; color:#64748B; font-size:11px; font-weight:600; padding:9px 14px; border-radius:6px;">How It Works</div>
+          </div>
+          <div style="display:flex; gap:14px;">
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#16A34A; font-size:10px; font-weight:700;">✓</span><span style="font-size:10px; color:#94A3B8;">No credit check</span></div>
+            <div style="display:flex; align-items:center; gap:4px;"><span style="color:#16A34A; font-size:10px; font-weight:700;">✓</span><span style="font-size:10px; color:#94A3B8;">Cancel anytime</span></div>
+          </div>
+        </div>
+
+        <!-- Right: 2 stacked compact cards -->
+        <div style="flex:1.1; padding:16px 24px 16px 12px; display:flex; flex-direction:column; gap:8px; justify-content:center;">
+
+          <!-- Card 1 — highlighted -->
+          <div style="background:#fff; border:1.5px solid #1A3A6B; border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(26,58,107,0.1);">
+            <div style="display:flex; gap:0;">
+              <div style="width:88px; background:linear-gradient(160deg,#dce8fc,#c7d9f7); flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                <div style="font-size:9px; color:#94A3B8; transform:rotate(-90deg); white-space:nowrap;">Camry photo</div>
+              </div>
+              <div style="flex:1; padding:10px 12px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:5px;">
+                  <div>
+                    <div style="font-size:11px; font-weight:700; color:#0D1F3C;">2023 Toyota Camry</div>
+                    <div style="font-size:9px; color:#94A3B8;">Sedan</div>
+                  </div>
+                  <div style="font-size:14px; font-weight:800; color:#1A3A6B;">$300<span style="font-size:8px; font-weight:400; color:#94A3B8;">/wk</span></div>
+                </div>
+                <div style="display:flex; gap:3px; margin-bottom:7px;">
+                  <div style="background:#DCFCE7; color:#15803D; font-size:8px; font-weight:700; padding:2px 6px; border-radius:3px;">● Available</div>
+                  <div style="background:#E8F0FE; color:#1A3A6B; font-size:8px; font-weight:600; padding:2px 6px; border-radius:3px;">Uber</div>
+                  <div style="background:#E8F0FE; color:#1A3A6B; font-size:8px; font-weight:600; padding:2px 6px; border-radius:3px;">Lyft</div>
+                </div>
+                <div style="background:#1A3A6B; color:#fff; text-align:center; font-size:9px; font-weight:700; padding:6px; border-radius:5px;">Apply →</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div style="background:#fff; border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+            <div style="display:flex; gap:0;">
+              <div style="width:88px; background:linear-gradient(160deg,#e8f0fe,#d4e2f9); flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                <div style="font-size:9px; color:#94A3B8; transform:rotate(-90deg); white-space:nowrap;">CR-V photo</div>
+              </div>
+              <div style="flex:1; padding:10px 12px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:5px;">
+                  <div>
+                    <div style="font-size:11px; font-weight:700; color:#0D1F3C;">2022 Honda CR-V</div>
+                    <div style="font-size:9px; color:#94A3B8;">SUV</div>
+                  </div>
+                  <div style="font-size:14px; font-weight:800; color:#1A3A6B;">$350<span style="font-size:8px; font-weight:400; color:#94A3B8;">/wk</span></div>
+                </div>
+                <div style="display:flex; gap:3px; margin-bottom:7px;">
+                  <div style="background:#DCFCE7; color:#15803D; font-size:8px; font-weight:700; padding:2px 6px; border-radius:3px;">● Available</div>
+                  <div style="background:#E8F0FE; color:#1A3A6B; font-size:8px; font-weight:600; padding:2px 6px; border-radius:3px;">Uber</div>
+                  <div style="background:#E8F0FE; color:#1A3A6B; font-size:8px; font-weight:600; padding:2px 6px; border-radius:3px;">Lyft</div>
+                </div>
+                <div style="border:1.5px solid #CBD5E1; color:#64748B; text-align:center; font-size:9px; font-weight:700; padding:5px; border-radius:5px;">View Car</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- "View all" hint -->
+          <div style="text-align:center; font-size:10px; color:#94A3B8; padding-top:2px;">+ 48 more vehicles available</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Two stacked cards</h3>
+      <p>Two horizontal vehicle cards stacked. First is highlighted with navy border (featured), second is subtle. Shows inventory depth immediately. Fills the right column fully.</p>
+    </div>
+  </div>
+
+</div>

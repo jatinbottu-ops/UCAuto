@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -124,6 +125,7 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
   const [vehicle, setVehicle] = useState<{
     id: string; make: string; model: string; year: number;
     weeklyPrice: number; depositAmount: number; uberEligible: boolean; lyftEligible: boolean;
+    images: string[];
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -327,6 +329,17 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
         {step === 0 && (
           <div className="bg-white border border-[#E2E8F0] rounded-lg p-7 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
             <h2 className="text-xl font-bold text-[#1A3A6B] mb-6">Confirm Your Vehicle</h2>
+            {vehicle.images && vehicle.images.length > 0 && (
+              <div className="relative w-full h-48 rounded-lg overflow-hidden mb-5 bg-[#E8F0FE]">
+                <Image
+                  src={vehicle.images[0]}
+                  alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 672px) 100vw, 672px"
+                />
+              </div>
+            )}
             <div className="bg-[#F7F9FC] rounded-lg p-5 mb-6">
               <h3 className="font-bold text-[#1E293B] text-lg mb-3">
                 {vehicle.year} {vehicle.make} {vehicle.model}

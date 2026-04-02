@@ -1,0 +1,12 @@
+{"type":"server-started","port":62363,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:62363","screen_dir":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content","state_dir":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/state"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/design-direction.html"}
+{"source":"user-event","type":"click","text":"UC Auto Connect · Atlanta\n      Your car. Your earnings.Your schedule.\n      Rent a Lyft & Uber-eligible vehicle with weekly payments, no long-term lease, no hassle.\n      \n        Apply Now\n        Browse Cars\n      \n      \n        \n          \n          \n            2023 Toyota Camry\n            Sedan · Uber + Lyft\n          \n          \n            $300/wk\n          \n        \n        \n          ✓ Available\n          Lyft Eligible\n        \n      \n    \n    \n      Clean & Trustworthy\n      Light backgrounds, refined navy + gold palette, card-based UI. Feels credible like a financial product. Builds confidence in first-time applicants.","choice":"clean","id":null,"timestamp":1775101957963}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/typography.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/hero-layout.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/waiting-1.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/design-system.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/inputs-and-cta.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/homepage-layout.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/homepage-hero-v2.html"}
+{"type":"screen-added","file":"/Users/jatinbottu/car rental website/uc-auto-connect/.superpowers/brainstorm/6705-1775101875/content/homepage-hero-v3.html"}
+{"type":"server-stopped","reason":"idle timeout"}

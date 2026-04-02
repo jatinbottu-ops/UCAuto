@@ -1,30 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Plus, ToggleLeft, ToggleRight } from "lucide-react";
+import { Plus, Pencil, ToggleLeft, ToggleRight } from "lucide-react";
 import { AvailabilityBadge } from "@/components/vehicles/AvailabilityBadge";
+import { VehicleFormModal } from "@/components/vehicles/VehicleFormModal";
 
 interface Vehicle {
   id: string; slug: string; make: string; model: string; year: number;
   type: string; status: "available" | "limited" | "rented" | "waitlist";
   weeklyPrice: number; depositAmount: number; uberEligible: boolean;
-  lyftEligible: boolean; isFeatured: boolean;
+  lyftEligible: boolean; deliveryEligible: boolean; isFeatured: boolean;
+  transmission: string; fuelType: string; seats: number;
+  mpgCity?: number | null; mpgHighway?: number | null;
+  mileagePolicy: string; minRentalDays?: number | null;
+  features: string[]; description?: string | null; images: string[];
 }
 
 export default function AdminInventoryPage() {
   const { token } = useAuth();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
 
-  useEffect(() => {
+  const fetchVehicles = useCallback(() => {
     if (!token) return;
+    setLoading(true);
     fetch("/api/vehicles", { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => r.json())
       .then((data) => { setVehicles(data.vehicles || []); setLoading(false); })
       .catch(() => setLoading(false));
   }, [token]);
+
+  useEffect(() => { fetchVehicles(); }, [fetchVehicles]);
 
   const toggleFeatured = async (vehicle: Vehicle) => {
     if (!token) return;
@@ -58,7 +67,7 @@ export default function AdminInventoryPage() {
           Inventory
         </h1>
         <button
-          onClick={() => setShowAddForm(true)}
+          onClick={() => setShowAddModal(true)}
           className="flex items-center gap-2 px-4 py-2 bg-[#1A3A6B] text-white rounded-lg text-sm font-semibold hover:bg-[#122A52] transition-colors"
         >
           <Plus className="h-4 w-4" />
@@ -103,21 +112,32 @@ export default function AdminInventoryPage() {
                     </button>
                   </td>
                   <td className="py-3 pr-4">
-                    <select
-                      value={v.status}
-                      onChange={(e) => updateStatus(v, e.target.value as Vehicle["status"])}
-                      className="text-xs px-2 py-1 border border-[#E2E8F0] rounded text-[#0D1F3C]"
-                    >
-                      {["available", "limited", "rented", "waitlist"].map((s) => (
-                        <option key={s} value={s} className="capitalize">{s}</option>
-                      ))}
-                    </select>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={v.status}
+                        onChange={(e) => updateStatus(v, e.target.value as Vehicle["status"])}
+                        className="text-xs px-2 py-1 border border-[#E2E8F0] rounded text-[#0D1F3C]"
+                      >
+                        {["available", "limited", "rented", "waitlist"].map((s) => (
+                          <option key={s} value={s} className="capitalize">{s}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={() => setEditingVehicle(v)}
+                        className="p-1.5 rounded hover:bg-[#E8F0FE] text-[#64748B] hover:text-[#1A3A6B] transition-colors"
+                        title="Edit vehicle"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
               {vehicles.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-[#64748B]">No vehicles in inventory. Add one to get started.</td>
+                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-[#64748B]">
+                    No vehicles in inventory. Add one to get started.
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -125,20 +145,23 @@ export default function AdminInventoryPage() {
         </div>
       )}
 
-      {/* Add Vehicle modal placeholder */}
-      {showAddForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
-          <div className="bg-white border border-[#E2E8F0] rounded-lg p-6 max-w-md w-full">
-            <h2 className="font-bold text-[#0D1F3C] text-lg mb-4">Add Vehicle</h2>
-            <p className="text-[#64748B] text-sm mb-4">Use the API to add vehicles, or connect to the database to use this form.</p>
-            <button
-              onClick={() => setShowAddForm(false)}
-              className="w-full py-2.5 bg-[#1A3A6B] text-white rounded-lg font-semibold text-sm hover:bg-[#122A52]"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+      {/* Add Vehicle modal */}
+      <VehicleFormModal
+        key="add"
+        open={showAddModal}
+        onOpenChange={setShowAddModal}
+        onSuccess={fetchVehicles}
+      />
+
+      {/* Edit Vehicle modal */}
+      {editingVehicle && (
+        <VehicleFormModal
+          key={editingVehicle.id}
+          vehicle={editingVehicle}
+          open={!!editingVehicle}
+          onOpenChange={(open) => { if (!open) setEditingVehicle(null); }}
+          onSuccess={() => { fetchVehicles(); setEditingVehicle(null); }}
+        />
       )}
     </div>
   );

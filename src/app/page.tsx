@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { HeroVehicleCards } from "@/components/vehicles/HeroVehicleCards";
+import { prisma } from "@/lib/db";
 import {
   Accordion,
   AccordionContent,
@@ -73,71 +74,19 @@ const requirements = [
   { title: "Proof of insurance", sub: "Rideshare-endorsed policy required" },
 ];
 
-const staticVehicles = [
-  {
-    id: "1",
-    slug: "2023-toyota-camry",
-    make: "Toyota",
-    model: "Camry",
-    year: 2023,
-    type: "sedan",
-    status: "available" as const,
-    weeklyPrice: 30000,
-    depositAmount: 50000,
-    transmission: "automatic",
-    fuelType: "gas",
-    seats: 5,
-    uberEligible: true,
-    lyftEligible: true,
-    deliveryEligible: false,
-    images: [],
-  },
-  {
-    id: "2",
-    slug: "2022-honda-crv",
-    make: "Honda",
-    model: "CR-V",
-    year: 2022,
-    type: "suv",
-    status: "available" as const,
-    weeklyPrice: 35000,
-    depositAmount: 50000,
-    transmission: "automatic",
-    fuelType: "hybrid",
-    seats: 5,
-    uberEligible: true,
-    lyftEligible: true,
-    deliveryEligible: true,
-    images: [],
-  },
-  {
-    id: "3",
-    slug: "2022-toyota-sienna",
-    make: "Toyota",
-    model: "Sienna",
-    year: 2022,
-    type: "minivan",
-    status: "limited" as const,
-    weeklyPrice: 40000,
-    depositAmount: 60000,
-    transmission: "automatic",
-    fuelType: "hybrid",
-    seats: 8,
-    uberEligible: true,
-    lyftEligible: true,
-    deliveryEligible: false,
-    images: [],
-  },
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const vehicles = await prisma.vehicle.findMany({
+    where: { status: { in: ["available", "limited"] } },
+    orderBy: [{ isFeatured: "desc" }, { createdAt: "asc" }],
+    take: 6,
+  });
   return (
     <>
       <Navbar />
       <main className="pt-16">
 
         {/* ── Hero ──────────────────────────────────────── */}
-        <section className="bg-[#F7F9FC] pt-16 pb-14 lg:pt-20 lg:pb-20">
+        <section className="bg-[#F7F9FC] pt-24 pb-24 lg:pt-32 lg:pb-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
@@ -195,8 +144,8 @@ export default function HomePage() {
               {/* Stacked hero cards */}
               <div className="hidden lg:block">
                 <HeroVehicleCards
-                  vehicles={staticVehicles.slice(0, 2)}
-                  totalCount={staticVehicles.length}
+                  vehicles={vehicles.slice(0, 2)}
+                  totalCount={vehicles.length}
                 />
               </div>
             </div>
@@ -324,7 +273,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {staticVehicles.map((v) => (
+              {vehicles.map((v) => (
                 <VehicleCard key={v.id} vehicle={v} />
               ))}
             </div>
