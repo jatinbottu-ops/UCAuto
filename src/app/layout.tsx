@@ -3,6 +3,8 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import { StackProvider } from "@stackframe/stack";
+import { stackServerApp } from "@/stack";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -35,10 +37,12 @@ export default function RootLayout({
       className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F7F9FC] text-[#0D1F3C]">
-        <Providers>
-          {children}
-          <Toaster />
-        </Providers>
+        <StackProvider app={stackServerApp}>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
+        </StackProvider>
       </body>
     </html>
   );

@@ -2,8 +2,6 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, Suspense } from "react";
-import { StackProvider } from "@stackframe/stack";
-import { stackServerApp } from "@/stack";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/components/ui/toaster";
 
@@ -21,14 +19,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <StackProvider app={stackServerApp}>
-      <Suspense>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <ToastProvider>{children}</ToastProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </Suspense>
-    </StackProvider>
+    <Suspense>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </Suspense>
   );
 }
