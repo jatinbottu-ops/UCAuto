@@ -65,15 +65,13 @@ enum PaymentStatus {
 
 model User {
   id                    String    @id @default(uuid())
+  stackAuthId           String?   @unique
   email                 String    @unique
-  passwordHash          String
   firstName             String
   lastName              String
   phone                 String?
   dateOfBirth           DateTime?
   role                  UserRole  @default(customer)
-  emailVerified         Boolean   @default(false)
-  emailVerifiedAt       DateTime?
   address               Json?
   idDocumentKey         String?
   idVerified            Boolean   @default(false)

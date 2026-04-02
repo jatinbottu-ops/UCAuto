@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "@/contexts/AuthContext";
+import { useStackApp } from "@stackframe/stack";
 
 const schema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -66,7 +66,7 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const { login } = useAuth();
+  const stackApp = useStackApp();
 
   const {
     register,
@@ -78,17 +78,33 @@ export default function SignupPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const result = await stackApp.signUpWithCredential({
+        email: data.email,
+        password: data.password,
+        noRedirect: true,
+        noVerificationCallback: true,
       });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.error || "Signup failed. Please try again.");
+      if (result.status === "error") {
+        const msg = (result.error as { message?: string })?.message;
+        setError(msg?.includes("already") ? "An account with this email already exists." : "Signup failed. Please try again.");
         return;
       }
-      login(json.token, json.user);
+
+      // Create the Prisma user profile linked to Stack Auth
+      const profileRes = await fetch("/api/auth/sync-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone,
+        }),
+      });
+      if (!profileRes.ok) {
+        setError("Account created but profile setup failed. Please contact support.");
+        return;
+      }
+
       router.push("/dashboard");
     } catch {
       setError("Something went wrong. Please try again.");

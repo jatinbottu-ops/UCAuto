@@ -1,7 +1,6 @@
 import nextEnv from "@next/env";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 
 const { loadEnvConfig } = nextEnv;
 loadEnvConfig(process.cwd());
@@ -181,21 +180,18 @@ async function main() {
   console.log("Seeding database...");
 
   for (const demoUser of demoUsers) {
-    const passwordHash = await bcrypt.hash(demoUser.password, 12);
     await prisma.user.upsert({
       where: { email: demoUser.email },
       update: {
         firstName: demoUser.firstName,
         lastName: demoUser.lastName,
         role: demoUser.role,
-        passwordHash,
       },
       create: {
         email: demoUser.email,
         firstName: demoUser.firstName,
         lastName: demoUser.lastName,
         role: demoUser.role,
-        passwordHash,
       },
     });
     console.log(`Seeded user: ${demoUser.email} (${demoUser.role})`);

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "@/contexts/AuthContext";
+import { useStackApp } from "@stackframe/stack";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -20,7 +20,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { login } = useAuth();
+  const stackApp = useStackApp();
 
   const {
     register,
@@ -32,18 +32,22 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email, password: data.password }),
+      const result = await stackApp.signInWithCredential({
+        email: data.email,
+        password: data.password,
+        noRedirect: true,
       });
-      const json = await res.json();
-      if (!res.ok) {
+      if (result.status === "error") {
         setError("Invalid email or password");
         return;
       }
-      login(json.token, json.user);
-      router.push(json.user.role === "admin" ? "/admin" : "/dashboard");
+      const profileRes = await fetch("/api/user/profile");
+      if (profileRes.ok) {
+        const { user } = await profileRes.json();
+        router.push(user.role === "admin" ? "/admin" : "/dashboard");
+      } else {
+        router.push("/dashboard");
+      }
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

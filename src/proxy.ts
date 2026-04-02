@@ -1,48 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyAccessToken } from "@/lib/auth";
+import { stackServerApp } from "@/stack";
 
 const protectedRoutes = ["/dashboard", "/apply", "/checkout"];
 const adminRoutes = ["/admin"];
 const authRoutes = ["/login", "/signup"];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAdmin = adminRoutes.some((route) => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  const authHeader = request.headers.get("authorization");
-  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
-
-  // For page routes, check cookie-based token
-  const cookieToken = request.cookies.get("access_token")?.value;
-  const activeToken = token || cookieToken;
-
   if (isProtected || isAdmin) {
-    if (!activeToken) {
+    const user = await stackServerApp.getUser({ or: "return-null" });
+    if (!user) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-
-    try {
-      const payload = verifyAccessToken(activeToken);
-
-      if (isAdmin && payload.role !== "admin") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
-
-      return NextResponse.next();
-    } catch {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+    return NextResponse.next();
   }
 
-  if (isAuthRoute && activeToken) {
-    try {
-      verifyAccessToken(activeToken);
+  if (isAuthRoute) {
+    const user = await stackServerApp.getUser({ or: "return-null" });
+    if (user) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
-    } catch {
-      // Token invalid, allow through
     }
   }
 

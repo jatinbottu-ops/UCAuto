@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { useUser, useStackApp } from "@stackframe/stack";
 
 interface User {
   id: string;
@@ -13,51 +14,62 @@ interface User {
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (token: string, user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
-  login: () => {},
-  logout: () => {},
+  logout: async () => {},
   isLoading: true,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const stackUser = useUser();
+  const stackApp = useStackApp();
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const stackUserId = stackUser === undefined ? "loading" : (stackUser?.id ?? "null");
+
   useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
-    const storedUser = localStorage.getItem("user");
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+    if (stackUser === undefined) return;
+
+    if (!stackUser) {
+      setUser(null);
+      setToken(null);
+      setIsLoading(false);
+      return;
     }
-    setIsLoading(false);
-  }, []);
 
-  const login = useCallback((newToken: string, newUser: User) => {
-    setToken(newToken);
-    setUser(newUser);
-    localStorage.setItem("access_token", newToken);
-    localStorage.setItem("user", JSON.stringify(newUser));
-  }, []);
+    const init = async () => {
+      try {
+        const [authJson, profileRes] = await Promise.all([
+          stackUser.getAuthJson(),
+          fetch("/api/user/profile"),
+        ]);
+        if (profileRes.ok) {
+          const { user: prismaUser } = await profileRes.json();
+          setUser(prismaUser);
+        }
+        setToken(authJson.accessToken ?? null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    init();
+  }, [stackUserId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const logout = useCallback(async () => {
-    setToken(null);
+  const logout = async () => {
+    await stackApp.signOut();
     setUser(null);
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    await fetch("/api/auth/logout", { method: "POST" });
-  }, []);
+    setToken(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,22 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyAccessToken, TokenPayload } from "./auth";
+import { stackServerApp } from "@/stack";
+import { prisma } from "@/lib/db";
+
+export interface TokenPayload {
+  userId: string;
+  email: string;
+  role: string;
+}
 
 export async function requireAuth(
-  request: NextRequest
+  _request: NextRequest
 ): Promise<{ payload: TokenPayload } | NextResponse> {
-  const authHeader = request.headers.get("authorization");
-  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
-
-  if (!token) {
+  const stackUser = await stackServerApp.getUser({ or: "return-null" });
+  if (!stackUser || !stackUser.primaryEmail) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  try {
-    const payload = verifyAccessToken(token);
-    return { payload };
-  } catch {
-    return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+  const prismaUser = await prisma.user.findUnique({
+    where: { stackAuthId: stackUser.id },
+    select: { id: true, email: true, role: true },
+  });
+
+  if (!prismaUser) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  return { payload: { userId: prismaUser.id, email: prismaUser.email, role: prismaUser.role } };
 }
 
 export async function requireAdmin(
