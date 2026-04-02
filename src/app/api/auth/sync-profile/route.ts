@@ -3,6 +3,8 @@ import { z } from "zod";
 import { stackServerApp } from "@/stack";
 import { prisma } from "@/lib/db";
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),

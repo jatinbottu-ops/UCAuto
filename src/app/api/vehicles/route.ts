@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-middleware";
 
+export const dynamic = 'force-dynamic';
+
 const vehicleSchema = z.object({
   slug: z.string(),
   make: z.string(),

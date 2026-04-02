@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { sendWaitlistJoinedEmail } from "@/lib/email";
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   vehicleId: z.string().uuid(),
   name: z.string().optional(),

@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-middleware";
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   idVerified: z.boolean().optional(),
   insuranceVerified: z.boolean().optional(),

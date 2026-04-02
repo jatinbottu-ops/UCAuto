@@ -7,6 +7,8 @@ import {
   sendApplicationRejectedEmail,
 } from "@/lib/email";
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   status: z.enum(["submitted", "under_review", "approved", "payment_pending", "active", "waitlisted", "rejected"]),
   adminNotes: z.string().optional(),

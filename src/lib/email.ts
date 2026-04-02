@@ -1,6 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | undefined;
+
+// Lazy init: deferred until first use so build-time module evaluation
+// never throws when RESEND_API_KEY is absent from the environment.
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 const FROM_EMAIL = "U&C Auto Connect <noreply@ucautoconnect.com>";
 
@@ -10,7 +19,7 @@ export async function sendVerificationEmail(
   token: string
 ) {
   const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify-email?token=${token}`;
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Verify your email - U&C Auto Connect",
@@ -36,7 +45,7 @@ export async function sendPasswordResetEmail(
   token: string
 ) {
   const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Reset your password - U&C Auto Connect",
@@ -61,7 +70,7 @@ export async function sendApplicationSubmittedEmail(
   firstName: string,
   vehicleName: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Application Received - U&C Auto Connect",
@@ -87,7 +96,7 @@ export async function sendApplicationApprovedEmail(
   vehicleName: string,
   applicationId: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Application Approved! - U&C Auto Connect",
@@ -114,7 +123,7 @@ export async function sendApplicationRejectedEmail(
   firstName: string,
   vehicleName: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Application Update - U&C Auto Connect",
@@ -141,7 +150,7 @@ export async function sendPaymentConfirmedEmail(
   amountCents: number
 ) {
   const amount = (amountCents / 100).toFixed(2);
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "Payment Confirmed - U&C Auto Connect",
@@ -166,7 +175,7 @@ export async function sendWaitlistJoinedEmail(
   vehicleName: string,
   position: number
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "You're on the waitlist - U&C Auto Connect",
@@ -190,7 +199,7 @@ export async function sendWaitlistNotifiedEmail(
   name: string,
   vehicleName: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: "A spot is available! - U&C Auto Connect",

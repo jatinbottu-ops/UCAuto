@@ -3,6 +3,8 @@ import Stripe from "stripe";
 import { prisma } from "@/lib/db";
 import { sendPaymentConfirmedEmail } from "@/lib/email";
 
+export const dynamic = 'force-dynamic';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder");
 
 export async function POST(request: NextRequest) {
