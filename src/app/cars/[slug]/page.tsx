@@ -21,12 +21,11 @@ export default async function VehicleDetailPage({
 
   const pricePerWeek = (vehicle.weeklyPrice / 100).toFixed(0);
   const deposit = (vehicle.depositAmount / 100).toFixed(0);
-  const isAvailable = vehicle.status === "available" || vehicle.status === "limited";
 
   return (
     <>
       <Navbar />
-      <main className="pt-16 min-h-screen bg-[#F7F9FC]">
+      <main className="pt-16 min-h-screen bg-[#F7F9FC] pb-24 lg:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {/* Breadcrumb */}
@@ -43,8 +42,34 @@ export default async function VehicleDetailPage({
 
             {/* Left: photos + specs */}
             <div>
+              {/* Mobile: vehicle name + price summary (shown above image on mobile only) */}
+              <div className="lg:hidden bg-white border border-[#E2E8F0] rounded-lg p-4 mb-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h1
+                      className="text-lg font-extrabold text-[#0D1F3C] tracking-tight leading-snug"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                      {vehicle.year} {vehicle.make} {vehicle.model}
+                    </h1>
+                    <p className="text-xs text-[#94A3B8] capitalize mt-0.5">{vehicle.type}</p>
+                  </div>
+                  <div className="text-right shrink-0 ml-3">
+                    <span className="text-2xl font-extrabold text-[#1A3A6B] tracking-tight">${pricePerWeek}</span>
+                    <span className="text-xs text-[#94A3B8]">/wk</span>
+                    <p className="text-[10px] text-[#94A3B8]">${deposit} deposit</p>
+                  </div>
+                </div>
+                <div className="flex gap-1.5 flex-wrap mt-2">
+                  <AvailabilityBadge status={vehicle.status} />
+                  {vehicle.uberEligible && <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#E8F0FE] text-[#1A3A6B] rounded">Uber</span>}
+                  {vehicle.lyftEligible && <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#E8F0FE] text-[#1A3A6B] rounded">Lyft</span>}
+                  {vehicle.deliveryEligible && <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#FFF7ED] text-[#C2410C] rounded">Delivery</span>}
+                </div>
+              </div>
+
               {/* Photo area */}
-              <div className="bg-[#E8F0FE] rounded-lg h-72 lg:h-96 flex items-center justify-center mb-6 relative overflow-hidden border border-[#E2E8F0]">
+              <div className="bg-[#E8F0FE] rounded-lg h-64 sm:h-72 lg:h-96 flex items-center justify-center mb-6 relative overflow-hidden border border-[#E2E8F0]">
                 {vehicle.images && vehicle.images.length > 0 ? (
                   <Image
                     src={vehicle.images[0]}
@@ -99,8 +124,8 @@ export default async function VehicleDetailPage({
               )}
             </div>
 
-            {/* Right: sticky pricing sidebar */}
-            <div className="lg:sticky lg:top-24">
+            {/* Right: sticky pricing sidebar (desktop only) */}
+            <div className="hidden lg:block lg:sticky lg:top-24">
               <div className="bg-white border border-[#E2E8F0] rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
                 {/* Vehicle name */}
                 <h1
@@ -179,6 +204,32 @@ export default async function VehicleDetailPage({
           </div>
         </div>
       </main>
+
+      {/* Mobile sticky bottom CTA bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E2E8F0] px-4 py-3 shadow-[0_-2px_12px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center gap-3 max-w-2xl mx-auto">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-[#94A3B8] truncate">{vehicle.year} {vehicle.make} {vehicle.model}</p>
+            <p className="text-base font-extrabold text-[#1A3A6B] leading-tight">${pricePerWeek}<span className="text-xs font-normal text-[#94A3B8]">/wk</span></p>
+          </div>
+          {vehicle.status !== "rented" ? (
+            <Link
+              href={`/apply/${vehicle.id}`}
+              className="shrink-0 px-5 py-2.5 bg-[#1A3A6B] text-white text-sm font-semibold rounded-md hover:bg-[#122A52] transition-colors"
+            >
+              Apply Now →
+            </Link>
+          ) : (
+            <Link
+              href={`/waitlist/${vehicle.id}`}
+              className="shrink-0 px-5 py-2.5 border border-[#E2E8F0] text-[#64748B] text-sm font-semibold rounded-md hover:border-[#1A3A6B] hover:text-[#1A3A6B] transition-colors"
+            >
+              Join Waitlist
+            </Link>
+          )}
+        </div>
+      </div>
+
       <Footer />
     </>
   );

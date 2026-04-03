@@ -466,33 +466,79 @@ export default function CarsPage() {
               className="absolute inset-0 bg-black/40"
               onClick={() => setFilterOpen(false)}
             />
-            <div className="absolute right-0 top-0 bottom-0 w-72 bg-white overflow-y-auto p-5 shadow-xl">
-              <div className="flex items-center justify-between mb-6">
+            <div className="absolute right-0 top-0 bottom-0 w-80 bg-white overflow-y-auto shadow-xl">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0]">
                 <span className="text-sm font-bold text-[#0D1F3C]">Filters</span>
                 <button onClick={() => setFilterOpen(false)}>
                   <X className="w-5 h-5 text-[#64748B]" />
                 </button>
               </div>
-              {statusOptions.map((s) => (
-                <label key={s} className="flex items-center gap-2.5 py-1 cursor-pointer">
-                  <Checkbox id={`m-status-${s}`} checked={selectedStatuses.includes(s)}
-                    onCheckedChange={(v) => setSelectedStatuses((p) => v ? [...p, s] : p.filter((x) => x !== s))}
-                    className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
-                  <Label htmlFor={`m-status-${s}`} className="text-sm text-[#64748B] capitalize cursor-pointer">{s}</Label>
-                </label>
-              ))}
-              {vehicleTypes.map((t) => (
-                <label key={t} className="flex items-center gap-2.5 py-1 cursor-pointer">
-                  <Checkbox id={`m-type-${t}`} checked={selectedTypes.includes(t)}
-                    onCheckedChange={(v) => setSelectedTypes((p) => v ? [...p, t] : p.filter((x) => x !== t))}
-                    className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
-                  <Label htmlFor={`m-type-${t}`} className="text-sm text-[#64748B] capitalize cursor-pointer">{t}</Label>
-                </label>
-              ))}
-              <button onClick={() => setFilterOpen(false)}
-                className="w-full mt-6 py-2.5 bg-[#1A3A6B] text-white text-sm font-semibold rounded-md hover:bg-[#122A52] transition-colors">
-                Apply Filters
-              </button>
+              <div className="p-5 space-y-6">
+                {/* Availability */}
+                <div>
+                  <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider mb-3">Availability</p>
+                  {statusOptions.map((s) => (
+                    <label key={s} className="flex items-center gap-2.5 py-1.5 cursor-pointer">
+                      <Checkbox id={`m-status-${s}`} checked={selectedStatuses.includes(s)}
+                        onCheckedChange={(v) => setSelectedStatuses((p) => v ? [...p, s] : p.filter((x) => x !== s))}
+                        className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
+                      <Label htmlFor={`m-status-${s}`} className="text-sm text-[#64748B] capitalize cursor-pointer">{s}</Label>
+                    </label>
+                  ))}
+                </div>
+                {/* Vehicle Type */}
+                <div>
+                  <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider mb-3">Vehicle Type</p>
+                  {vehicleTypes.map((t) => (
+                    <label key={t} className="flex items-center gap-2.5 py-1.5 cursor-pointer">
+                      <Checkbox id={`m-type-${t}`} checked={selectedTypes.includes(t)}
+                        onCheckedChange={(v) => setSelectedTypes((p) => v ? [...p, t] : p.filter((x) => x !== t))}
+                        className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
+                      <Label htmlFor={`m-type-${t}`} className="text-sm text-[#64748B] capitalize cursor-pointer">{t}</Label>
+                    </label>
+                  ))}
+                </div>
+                {/* Fuel Type */}
+                <div>
+                  <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider mb-3">Fuel Type</p>
+                  {fuelTypes.map((f) => (
+                    <label key={f} className="flex items-center gap-2.5 py-1.5 cursor-pointer">
+                      <Checkbox id={`m-fuel-${f}`} checked={selectedFuels.includes(f)}
+                        onCheckedChange={(v) => setSelectedFuels((p) => v ? [...p, f] : p.filter((x) => x !== f))}
+                        className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
+                      <Label htmlFor={`m-fuel-${f}`} className="text-sm text-[#64748B] capitalize cursor-pointer">{f}</Label>
+                    </label>
+                  ))}
+                </div>
+                {/* Platform */}
+                <div>
+                  <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider mb-3">Platform</p>
+                  {[
+                    { id: "m-uber", label: "Uber Eligible", value: uberOnly, setter: setUberOnly },
+                    { id: "m-lyft", label: "Lyft Eligible", value: lyftOnly, setter: setLyftOnly },
+                    { id: "m-delivery", label: "Delivery Eligible", value: deliveryOnly, setter: setDeliveryOnly },
+                  ].map(({ id, label, value, setter }) => (
+                    <label key={id} className="flex items-center gap-2.5 py-1.5 cursor-pointer">
+                      <Checkbox id={id} checked={value}
+                        onCheckedChange={(v) => setter(!!v)}
+                        className="rounded border-[#CBD5E1] data-[state=checked]:bg-[#1A3A6B] data-[state=checked]:border-[#1A3A6B]" />
+                      <Label htmlFor={id} className="text-sm text-[#64748B] cursor-pointer">{label}</Label>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="sticky bottom-0 p-5 bg-white border-t border-[#E2E8F0] flex gap-3">
+                <button
+                  onClick={resetFilters}
+                  className="flex-1 py-2.5 text-sm font-semibold text-[#64748B] border border-[#E2E8F0] rounded-md hover:bg-[#F7F9FC] transition-colors"
+                >
+                  Reset
+                </button>
+                <button onClick={() => setFilterOpen(false)}
+                  className="flex-1 py-2.5 bg-[#1A3A6B] text-white text-sm font-semibold rounded-md hover:bg-[#122A52] transition-colors">
+                  Show Results
+                </button>
+              </div>
             </div>
           </div>
         )}

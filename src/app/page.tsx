@@ -272,7 +272,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {vehicles.map((v: (typeof vehicles)[number]) => (
                 <VehicleCard key={v.id} vehicle={v} />
               ))}

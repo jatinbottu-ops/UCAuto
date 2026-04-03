@@ -139,6 +139,15 @@ export function Navbar() {
           <div className="flex flex-col gap-3 mt-8">
             {user ? (
               <>
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="text-center py-3 border border-white/20 text-white rounded-md font-semibold hover:bg-white/10 transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   className="text-center py-3 border border-white/20 text-white rounded-md font-semibold hover:bg-white/10 transition-colors"

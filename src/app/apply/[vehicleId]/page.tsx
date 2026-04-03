@@ -181,25 +181,34 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
       .then((data) => setApplicationId(data.application?.id));
   }, [token, vehicle]);
 
-  const simulateUpload = (
+  const uploadDoc = async (
     file: File,
+    docType: "license" | "insurance",
     setter: (s: UploadState) => void
   ) => {
-    setter({ status: "uploading", progress: 0 });
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 20;
-      setter({ status: "uploading", progress });
-      if (progress >= 100) {
-        clearInterval(interval);
-        setter({
-          status: "success",
-          progress: 100,
-          filename: file.name,
-          key: `uploads/${Date.now()}-${file.name}`,
-        });
+    if (!applicationId || !token) {
+      setter({ status: "error", progress: 0, error: "Application not ready. Please wait." });
+      return;
+    }
+    setter({ status: "uploading", progress: 50 });
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("docType", docType);
+      const res = await fetch(`/api/applications/${applicationId}/upload-doc`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setter({ status: "error", progress: 0, error: data.error || "Upload failed" });
+        return;
       }
-    }, 300);
+      setter({ status: "success", progress: 100, filename: file.name, key: data.key });
+    } catch {
+      setter({ status: "error", progress: 0, error: "Upload failed. Please try again." });
+    }
   };
 
   const savePersonalInfo = async (data: PersonalData) => {
@@ -380,7 +389,7 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
           <div className="bg-white border border-[#E2E8F0] rounded-lg p-7 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
             <h2 className="text-xl font-bold text-[#1A3A6B] mb-6">Personal Information</h2>
             <form onSubmit={handleSubmit(savePersonalInfo)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName" className="block text-sm font-medium text-[#1E293B] mb-1">First Name</Label>
                   <input
@@ -430,8 +439,8 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
                 />
                 {errors.address && <p className="text-xs text-[#B91C1C] mt-1">{errors.address.message}</p>}
               </div>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="col-span-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="col-span-2 sm:col-span-2">
                   <Label htmlFor="city" className="block text-sm font-medium text-[#1E293B] mb-1">City</Label>
                   <input
                     id="city"
@@ -451,7 +460,7 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
                   />
                 </div>
               </div>
-              <div>
+              <div className="sm:max-w-[200px]">
                 <Label htmlFor="zip" className="block text-sm font-medium text-[#1E293B] mb-1">ZIP Code</Label>
                 <input
                   id="zip"
@@ -487,7 +496,7 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
             <DocumentUpload
               label="Driver's License"
               accept="image/*,.pdf"
-              onUpload={(f) => simulateUpload(f, setLicenseUpload)}
+              onUpload={(f) => uploadDoc(f, "license", setLicenseUpload)}
               uploadState={licenseUpload}
             />
             <div className="flex items-center justify-between mt-5">
@@ -516,7 +525,7 @@ export default function ApplyPage({ params }: { params: Promise<{ vehicleId: str
             <DocumentUpload
               label="Insurance Document"
               accept="image/*,.pdf"
-              onUpload={(f) => simulateUpload(f, setInsuranceUpload)}
+              onUpload={(f) => uploadDoc(f, "insurance", setInsuranceUpload)}
               uploadState={insuranceUpload}
             />
             <div className="flex items-center justify-between mt-5">
