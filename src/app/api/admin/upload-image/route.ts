@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 import { requireAdmin } from "@/lib/auth-middleware";
+import { uploadFile } from "@/lib/storage";
 
 export const dynamic = 'force-dynamic';
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MAX_SIZE_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: NextRequest) {
   const auth = await requireAdmin(request);
@@ -30,17 +29,12 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Sanitize: keep only alphanumeric, dots, dashes, underscores
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const filename = `${Date.now()}-${sanitizedName}`;
+    const key = `vehicles/${Date.now()}-${sanitizedName}`;
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    const url = await uploadFile(buffer, key, file.type);
 
-    await writeFile(path.join(uploadsDir, filename), buffer);
-
-    return NextResponse.json({ url: `/uploads/${filename}` });
+    return NextResponse.json({ url });
   } catch (error) {
     console.error("POST /api/admin/upload-image error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

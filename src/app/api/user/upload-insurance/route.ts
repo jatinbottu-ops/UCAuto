@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/auth-middleware";
+import { uploadFile } from "@/lib/storage";
 
 export const dynamic = 'force-dynamic';
 
@@ -29,14 +28,10 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
     const ext = file.name.split(".").pop()?.replace(/[^a-zA-Z0-9]/g, "") || "jpg";
-    const filename = `${auth.payload.userId}-${Date.now()}.${ext}`;
-    const dir = join(process.cwd(), "public", "uploads", "insurance");
-    await mkdir(dir, { recursive: true });
-    await writeFile(join(dir, filename), buffer);
+    const key = `insurance/${auth.payload.userId}-${Date.now()}.${ext}`;
 
-    const docKey = `/uploads/insurance/${filename}`;
+    const docKey = await uploadFile(buffer, key, file.type);
 
     await prisma.user.update({
       where: { id: auth.payload.userId },
