@@ -44,7 +44,7 @@ function HeroCard({
     >
       <div className="flex">
         {/* Photo strip */}
-        <div className="relative w-28 shrink-0 bg-[#E8F0FE]">
+        <div className="relative w-28 shrink-0 bg-[#E8F0FE] self-stretch min-h-[90px]">
           {vehicle.images && vehicle.images.length > 0 ? (
             <Image
               src={vehicle.images[0]}
