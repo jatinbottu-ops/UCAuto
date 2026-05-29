@@ -92,8 +92,8 @@ async function fromHeader(gmail: ReturnType<typeof google.gmail>): Promise<strin
 }
 
 function signature(): string {
-  if (config.senderSignature) return config.senderSignature;
-  return config.senderName;
+  // Name + phone are hardcoded and always present in the signature.
+  return `${config.senderName}\n${config.senderPhone}`;
 }
 
 /** Compose RFC-2822 MIME and create a Gmail draft. Returns the draft id. */

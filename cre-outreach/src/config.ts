@@ -41,7 +41,9 @@ export const config = {
   googleClientSecret: get("GOOGLE_CLIENT_SECRET"),
   googleOauthPort: num("GOOGLE_OAUTH_PORT", 5555),
 
-  senderName: get("SENDER_NAME") ?? "Your Name",
+  // Hardcoded per request — name and phone always appear, regardless of .env.
+  senderName: "Jatin Bottu",
+  senderPhone: "470-991-9274",
   senderBackground:
     get("SENDER_BACKGROUND") ??
     "I'm a Georgia Tech student with prior hands-on experience applying AI in commercial real estate.",
