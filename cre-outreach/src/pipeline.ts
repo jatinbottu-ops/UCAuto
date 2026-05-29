@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { config, CONTACTS_CSV, requireAnthropic, requireHunter } from "./config.js";
+import { config, CONTACTS_CSV, requireAnthropicKeys, requireHunterKeys } from "./config.js";
 import { readDomains, relativeToRoot, writeContactsCsv } from "./csv.js";
 import { searchDomain } from "./hunter.js";
 import { writeEmail } from "./emailWriter.js";
@@ -28,7 +28,7 @@ export async function enrich(opts: {
   limit?: number;
   force?: boolean;
 }): Promise<void> {
-  requireHunter(); // fail fast before looping
+  const hunterKeys = requireHunterKeys(); // fail fast before looping
   if (!fs.existsSync(opts.input))
     throw new Error(
       `Input file not found: ${relativeToRoot(opts.input)}. ` +
@@ -66,9 +66,10 @@ export async function enrich(opts: {
   );
   const slice = opts.limit ? targets.slice(0, opts.limit) : targets;
   console.log(
-    `Enriching ${slice.length} domain(s) via Hunter.io${
-      opts.limit ? ` (limited to ${opts.limit})` : ""
-    }...\n`
+    `Enriching ${slice.length} domain(s) via Hunter.io ` +
+      `(${hunterKeys.length} key${hunterKeys.length === 1 ? "" : "s"} pooled)${
+        opts.limit ? `, limited to ${opts.limit}` : ""
+      }...\n`
   );
 
   for (const rec of slice) {
@@ -116,7 +117,7 @@ export async function generate(opts: {
   limit?: number;
   force?: boolean;
 }): Promise<void> {
-  requireAnthropic(); // fail fast before looping
+  const aiKeys = requireAnthropicKeys(); // fail fast before looping
   const state = loadState();
   const targets = state.records.filter(
     (r) =>
@@ -129,7 +130,10 @@ export async function generate(opts: {
     console.log("Nothing to generate. Run `enrich` first, or pass --force to rewrite.");
     return;
   }
-  console.log(`Writing ${slice.length} email(s) with ${config.anthropicModel}...\n`);
+  console.log(
+    `Writing ${slice.length} email(s) with ${config.anthropicModel} ` +
+      `(${aiKeys.length} key${aiKeys.length === 1 ? "" : "s"} pooled)...\n`
+  );
 
   for (const rec of slice) {
     try {

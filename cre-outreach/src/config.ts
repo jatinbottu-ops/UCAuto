@@ -26,10 +26,33 @@ function num(name: string, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
-export const config = {
-  hunterApiKey: get("HUNTER_API_KEY"),
+/**
+ * Collect API keys from a plural env var (comma/space/newline separated) plus
+ * an optional singular fallback, de-duplicated and order-preserved. Lets users
+ * pool several keys: e.g. HUNTER_API_KEYS=k1,k2,k3 (and/or HUNTER_API_KEY=k0).
+ */
+function keys(pluralName: string, singularName: string): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  const add = (raw: string | undefined) => {
+    if (!raw) return;
+    for (const part of raw.split(/[\s,]+/)) {
+      const k = part.trim();
+      if (k && !seen.has(k)) {
+        seen.add(k);
+        out.push(k);
+      }
+    }
+  };
+  add(process.env[pluralName]);
+  add(process.env[singularName]);
+  return out;
+}
 
-  anthropicApiKey: get("ANTHROPIC_API_KEY"),
+export const config = {
+  hunterApiKeys: keys("HUNTER_API_KEYS", "HUNTER_API_KEY"),
+
+  anthropicApiKeys: keys("ANTHROPIC_API_KEYS", "ANTHROPIC_API_KEY"),
   anthropicModel: get("ANTHROPIC_MODEL") ?? "claude-opus-4-8",
   anthropicEffort: (get("ANTHROPIC_EFFORT") ?? "medium") as
     | "low"
@@ -60,16 +83,20 @@ export const config = {
   minConfidence: num("MIN_CONFIDENCE", 50),
 };
 
-export function requireHunter(): string {
-  if (!config.hunterApiKey)
-    throw new Error("HUNTER_API_KEY is not set. Add it to your .env file.");
-  return config.hunterApiKey;
+export function requireHunterKeys(): string[] {
+  if (config.hunterApiKeys.length === 0)
+    throw new Error(
+      "No Hunter.io keys set. Add HUNTER_API_KEYS (comma-separated) or HUNTER_API_KEY to your .env file."
+    );
+  return config.hunterApiKeys;
 }
 
-export function requireAnthropic(): string {
-  if (!config.anthropicApiKey)
-    throw new Error("ANTHROPIC_API_KEY is not set. Add it to your .env file.");
-  return config.anthropicApiKey;
+export function requireAnthropicKeys(): string[] {
+  if (config.anthropicApiKeys.length === 0)
+    throw new Error(
+      "No Anthropic keys set. Add ANTHROPIC_API_KEYS (comma-separated) or ANTHROPIC_API_KEY to your .env file."
+    );
+  return config.anthropicApiKeys;
 }
 
 export function requireGoogle(): { clientId: string; clientSecret: string } {

@@ -19,8 +19,8 @@ cp .env.example .env      # then fill in the values
 
 Fill in `.env`:
 
-- **`HUNTER_API_KEY`** — from <https://hunter.io/api-keys>.
-- **`ANTHROPIC_API_KEY`** — from <https://console.anthropic.com/settings/keys>.
+- **`HUNTER_API_KEYS`** — one or more Hunter keys (comma-separated) from <https://hunter.io/api-keys>. Pool several users' free keys to combine their monthly credits; when one is exhausted or rate-limited, the next is used automatically. (`HUNTER_API_KEY` singular still works.)
+- **`ANTHROPIC_API_KEYS`** — one or more Anthropic keys (comma-separated) from <https://console.anthropic.com/settings/keys>. Pooled the same way to combine AI credits across users. (`ANTHROPIC_API_KEY` singular still works.)
 - **Google OAuth** — in [Google Cloud Console](https://console.cloud.google.com/): enable the **Gmail API**, create an **OAuth client ID** (type *Desktop app* is simplest), and add `http://localhost:5555/oauth2callback` as an authorized redirect URI. Put the client ID/secret in `.env`.
 - **`SENDER_*`** — your name, background, and especially **`SENDER_PITCH`** (what you're reaching out about). This drives the personalization and matters most for reply rate.
 
@@ -70,6 +70,10 @@ hines.com,Hines
 ## How the "best contact" is chosen
 
 `src/scoring.ts` scores every Hunter result: **+40** executive / **+22** senior seniority, **+28** for a CRE-relevant title (acquisitions, principal, partner, owner, asset management, president/CEO/founder, VP, development…), department signal, a scaled slice of Hunter's confidence, **+10** personal mailbox / **−35** generic role mailbox (`info@`, `sales@`…), and **+8** for a real first name. Tune via `TARGET_ROLE_KEYWORDS` and `MIN_CONFIDENCE` in `.env`.
+
+## Pooling keys across many users
+
+Both `HUNTER_API_KEYS` and `ANTHROPIC_API_KEYS` accept a comma-separated list. The pipeline uses one key until it fails with an auth / rate-limit / out-of-credits error, then transparently rotates to the next — so a group of people can drop in their individual free keys and share one larger combined quota. Exhausted keys are skipped for the rest of the run; if all keys for a service are exhausted, you get a single clear error and can add more.
 
 ## Notes
 

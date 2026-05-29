@@ -1,12 +1,38 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { config, requireAnthropic } from "./config.js";
+import { config, requireAnthropicKeys } from "./config.js";
+import { KeyPool, withRotation, type FailureKind } from "./keypool.js";
 import type { GeneratedEmail, OutreachRecord } from "./types.js";
 
-let _client: Anthropic | undefined;
-function client(): Anthropic {
-  if (!_client) _client = new Anthropic({ apiKey: requireAnthropic() });
-  return _client;
+// Pool of Anthropic keys, shared for the run. One client cached per key.
+let pool: KeyPool | undefined;
+const clients = new Map<string, Anthropic>();
+
+function anthropicPool(): KeyPool {
+  if (!pool) pool = new KeyPool("Anthropic", requireAnthropicKeys());
+  return pool;
 }
+
+function clientFor(key: string): Anthropic {
+  let c = clients.get(key);
+  if (!c) {
+    c = new Anthropic({ apiKey: key });
+    clients.set(key, c);
+  }
+  return c;
+}
+
+// Rotate to the next key on auth/permission/rate-limit/quota problems; any other
+// error (e.g. a malformed response we can't parse) is fatal for this record.
+const classify = (err: unknown): FailureKind => {
+  if (
+    err instanceof Anthropic.AuthenticationError || // 401 bad key
+    err instanceof Anthropic.PermissionDeniedError || // 403 (incl. billing)
+    err instanceof Anthropic.RateLimitError // 429 rate/credit limit
+  )
+    return "rotate";
+  if (err instanceof Anthropic.APIError && err.status === 402) return "rotate";
+  return "fatal";
+};
 
 /**
  * Best-practice rules for cold outreach, distilled from 2025 reply-rate
@@ -76,42 +102,52 @@ function buildUserPrompt(rec: OutreachRecord): string {
   return lines.join("\n");
 }
 
-/** Generate one personalized cold email for a record that has a contact. */
+/**
+ * Generate one personalized cold email for a record that has a contact.
+ * Pools multiple Anthropic keys: rotates to the next key on auth/rate/quota
+ * failures so several users' AI credits combine into one shared budget.
+ */
 export async function writeEmail(rec: OutreachRecord): Promise<GeneratedEmail> {
   if (!rec.contact) throw new Error(`No contact to write for ${rec.domain}`);
 
-  const res = await client().messages.create({
-    model: config.anthropicModel,
-    max_tokens: 6000,
-    thinking: { type: "adaptive" },
-    output_config: {
-      effort: config.anthropicEffort,
-      format: { type: "json_schema", schema: SCHEMA },
+  return withRotation(
+    anthropicPool(),
+    async (key) => {
+      const res = await clientFor(key).messages.create({
+        model: config.anthropicModel,
+        max_tokens: 6000,
+        thinking: { type: "adaptive" },
+        output_config: {
+          effort: config.anthropicEffort,
+          format: { type: "json_schema", schema: SCHEMA },
+        },
+        system: [
+          {
+            type: "text",
+            text: SYSTEM_PROMPT,
+            cache_control: { type: "ephemeral" },
+          },
+        ],
+        messages: [{ role: "user", content: buildUserPrompt(rec) }],
+      } as Anthropic.MessageCreateParamsNonStreaming);
+
+      const textBlock = res.content.find((b) => b.type === "text");
+      if (!textBlock || textBlock.type !== "text")
+        throw new Error(`No text output from model for ${rec.domain}`);
+
+      let parsed: GeneratedEmail;
+      try {
+        parsed = JSON.parse(textBlock.text) as GeneratedEmail;
+      } catch {
+        throw new Error(
+          `Model output for ${rec.domain} was not valid JSON:\n${textBlock.text.slice(0, 400)}`
+        );
+      }
+      if (!parsed.subject || !parsed.body)
+        throw new Error(`Model output for ${rec.domain} missing subject/body.`);
+
+      return { subject: parsed.subject.trim(), body: parsed.body.trim() };
     },
-    system: [
-      {
-        type: "text",
-        text: SYSTEM_PROMPT,
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages: [{ role: "user", content: buildUserPrompt(rec) }],
-  } as Anthropic.MessageCreateParamsNonStreaming);
-
-  const textBlock = res.content.find((b) => b.type === "text");
-  if (!textBlock || textBlock.type !== "text")
-    throw new Error(`No text output from model for ${rec.domain}`);
-
-  let parsed: GeneratedEmail;
-  try {
-    parsed = JSON.parse(textBlock.text) as GeneratedEmail;
-  } catch {
-    throw new Error(
-      `Model output for ${rec.domain} was not valid JSON:\n${textBlock.text.slice(0, 400)}`
-    );
-  }
-  if (!parsed.subject || !parsed.body)
-    throw new Error(`Model output for ${rec.domain} missing subject/body.`);
-
-  return { subject: parsed.subject.trim(), body: parsed.body.trim() };
+    classify
+  );
 }
