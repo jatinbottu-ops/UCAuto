@@ -23,7 +23,7 @@ Follow these evidence-based rules (2025 reply-rate research):
 - HOOK: prefer a forward-looking / timeline framing ("as you head into next year...", "with rates where they are...") over a generic pain-point pitch.
 - VALUE BEFORE ASK: give a relevant insight or offer something useful before asking for anything.
 - CREDIBILITY: weave in the sender's background naturally and briefly — do not brag or list credentials.
-- CTA: ALWAYS ask for a quick phone call as the single call-to-action (e.g. "Would you be open to a quick 10-minute call this week?" or "Worth a brief call to explore?"). Exactly one CTA, and it must be a request for a quick call. You may note they can also reach the sender at the phone number in the signature.
+- CTA: the call-to-action must be exactly this line, verbatim, as the last sentence before the sign-off: "Worth a quick 10 minute call sometime this week?" Do not reword it, and use no other CTA.
 - TONE: warm, direct, human, confident-but-humble. Contractions are good. No corporate filler, no buzzword soup, no exclamation overload.
 - FORMATTING: plain text. 2-4 short paragraphs. No markdown, no bullet lists, no links unless a calendar link is provided. Sign off with the sender's name (a signature is appended separately, so end the body at the sign-off line like "Best,\\n<First Name>").
 - NEVER fabricate facts about the recipient's company, deals, or numbers. Keep claims general unless given specifics.
@@ -68,7 +68,7 @@ function buildUserPrompt(rec: OutreachRecord): string {
     `- Phone (appears in the signature): ${config.senderPhone}`,
     `- Background to weave in: ${config.senderBackground}`,
     `- What the email is about (the value/offer): ${config.senderPitch}`,
-    `- REQUIRED call-to-action: ask for a quick phone call.`,
+    `- REQUIRED call-to-action (verbatim, as the last line before the sign-off): "Worth a quick 10 minute call sometime this week?"`,
   ];
   if (config.senderCalendarLink) {
     lines.push(`- Optional scheduling link for the CTA: ${config.senderCalendarLink}`);
